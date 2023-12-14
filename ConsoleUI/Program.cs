@@ -1,5 +1,5 @@
 ﻿using Business.Concrete;
-using DataAccess.Concrete.InMemory;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 
@@ -9,21 +9,31 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
-            carManager.Add(new Car { Id=5,Description = "Ela" });
-            carManager.Update(new Car {Id=1,BrandId=7,ColorId=7,DailyPrice=77777,ModelYear=1977,Description="7777777" });
-            foreach (Car item in carManager.GetAll())
+            CarManager carManager = new CarManager(new EfCarDal());
+            foreach (var item in carManager.GetCarDetails())
             {
-                Console.WriteLine($"{item.Id} - {item.BrandId} - {item.ColorId} - {item.ModelYear} - {item.DailyPrice} - {item.Description}");
+                Console.WriteLine($"{item.BrandName} - {item.CarName} - {item.ColorName} - {item.DailyPrice}");
             }
-            Console.WriteLine("\n---------------------------------------------\n");
-            carManager.Delete(new Car { Id = 5});
-            foreach (Car item in carManager.GetAll())
+            Console.WriteLine("-----------------");
+            foreach (var item in carManager.GetByUnitPrice(11000,14000))
             {
-                Console.WriteLine($"{item.Id} - {item.BrandId} - {item.ColorId} - {item.ModelYear} - {item.DailyPrice} - {item.Description}");
+                Console.WriteLine(item.CarName);
             }
-            Console.WriteLine("\n---------------------------------------------\n");
-            Console.WriteLine($"{carManager.GetById(4).Id} - {carManager.GetById(4).BrandId} - {carManager.GetById(4).ColorId} - {carManager.GetById(4).ModelYear} - {carManager.GetById(4).DailyPrice} - {carManager.GetById(4).Description}");
+
+
+            //ColorManager colorManager = new ColorManager(new EfColorDal());
+            //foreach (var item in colorManager.GetAll())
+            //{
+            //    Console.WriteLine(item.ColorName);
+            //}
+
+
+            //BrandManager brandManager = new(new EfBrandDal());
+            //foreach (var item in brandManager.GetAll())
+            //{
+            //    Console.WriteLine(item.BrandName);
+            //}
+
         }
     }
 }
